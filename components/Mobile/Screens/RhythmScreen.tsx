@@ -454,6 +454,26 @@ export default function RhythmScreen() {
                             <span>{t('common.start')}</span>
                         </button>
 
+                        {/* Staff Preview */}
+                        <div className="bg-white/60 backdrop-blur-sm p-3 rounded-xl border border-gray-200 mt-2">
+                            <p className="text-xs font-bold text-gray-500 uppercase text-center mb-2">Anteprima Pentagramma</p>
+                            <div className="bg-white rounded-lg p-2 border border-gray-100">
+                                <svg viewBox="0 0 200 80" className="w-full h-auto">
+                                    {/* Staff lines */}
+                                    {[0, 1, 2, 3, 4].map(i => (
+                                        <line key={i} x1="10" y1={20 + i * 10} x2="190" y2={20 + i * 10} stroke="#999" strokeWidth="0.5" />
+                                    ))}
+                                    {/* Treble clef representation */}
+                                    <text x="15" y="45" fontSize="24" fill="#666">𝄞</text>
+                                    {/* Sample notes */}
+                                    <circle cx="60" cy="40" r="3" fill="#d97706" />
+                                    <circle cx="90" cy="30" r="3" fill="#d97706" />
+                                    <circle cx="120" cy="35" r="3" fill="#d97706" />
+                                    <circle cx="150" cy="25" r="3" fill="#d97706" />
+                                </svg>
+                            </div>
+                        </div>
+
                         {/* Bottom Spacer for Safe Area */}
                         <div className="h-4"></div>
                     </div>

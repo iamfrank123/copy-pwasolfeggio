@@ -281,10 +281,10 @@ export default function MelodicScreen() {
 
                         <div className="bg-white/90 backdrop-blur-sm p-2.5 rounded-xl shadow-sm border border-gray-100">
                             <label className="text-xs font-bold text-gray-600 uppercase block mb-1.5">Intervallo</label>
-                            <div className="flex items-center gap-2">
-                                <input type="text" value={minNote} onChange={e => setMinNote(e.target.value)} className="flex-1 py-2 px-3 rounded-lg border border-gray-200 text-center font-semibold focus:border-amber-400 focus:outline-none" />
-                                <span className="text-gray-400">—</span>
-                                <input type="text" value={maxNote} onChange={e => setMaxNote(e.target.value)} className="flex-1 py-2 px-3 rounded-lg border border-gray-200 text-center font-semibold focus:border-amber-400 focus:outline-none" />
+                            <div className="flex items-center gap-1.5">
+                                <input type="text" value={minNote} onChange={e => setMinNote(e.target.value)} className="flex-1 py-1.5 px-2 text-sm rounded-lg border border-gray-200 text-center font-semibold focus:border-amber-400 focus:outline-none" placeholder="C4" />
+                                <span className="text-gray-400 text-sm">—</span>
+                                <input type="text" value={maxNote} onChange={e => setMaxNote(e.target.value)} className="flex-1 py-1.5 px-2 text-sm rounded-lg border border-gray-200 text-center font-semibold focus:border-amber-400 focus:outline-none" placeholder="C5" />
                             </div>
                         </div>
 
@@ -305,6 +305,23 @@ export default function MelodicScreen() {
                             <span className="text-3xl">▶️</span>
                             <span>{t('common.start')}</span>
                         </button>
+
+                        {/* Staff Preview */}
+                        <div className="bg-white/60 backdrop-blur-sm p-3 rounded-xl border border-gray-200 mt-2">
+                            <p className="text-xs font-bold text-gray-500 uppercase text-center mb-2">Anteprima Pentagramma</p>
+                            <div className="bg-white rounded-lg p-2 border border-gray-100">
+                                <svg viewBox="0 0 200 80" className="w-full h-auto">
+                                    {[0, 1, 2, 3, 4].map(i => (
+                                        <line key={i} x1="10" y1={20 + i * 10} x2="190" y2={20 + i * 10} stroke="#999" strokeWidth="0.5" />
+                                    ))}
+                                    <text x="15" y="45" fontSize="24" fill="#666">𝄞</text>
+                                    <circle cx="60" cy="40" r="3" fill="#f59e0b" />
+                                    <circle cx="90" cy="30" r="3" fill="#f59e0b" />
+                                    <circle cx="120" cy="35" r="3" fill="#f59e0b" />
+                                    <circle cx="150" cy="45" r="3" fill="#f59e0b" />
+                                </svg>
+                            </div>
+                        </div>
 
                         <div className="h-4"></div>
                     </div>
