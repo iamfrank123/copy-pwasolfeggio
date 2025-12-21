@@ -45,16 +45,18 @@
     },
     "melodic": {
         "title": "🎵 Melodic Solfege",
-        "subtitle": "Play the correct notes, in the right octave and in time.",
+        "subtitle": "Play the correct notes, in the right octave and on time.",
         "midi_warning_title": "MIDI Keyboard Required",
-        "midi_warning_desc": "This mode works only by connecting a MIDI keyboard. If you don't have a MIDI cable, try the Rhythm Mode to practice rhythm (touch/click).",
-        "interval": "Range:",
+        "midi_warning_desc": "This mode only works by connecting a MIDI keyboard. If you don't have a MIDI cable, try Rhythm Mode to practice rhythm (tap/click).",
+        "midi_required_title": "MIDI Keyboard Required",
+        "midi_required_desc": "This mode works ONLY with a connected MIDI keyboard. To practice without MIDI, use Rhythm mode with screen tapping.",
+        "interval": "Interval:",
         "wrong_note": "❌ Wrong Note!",
         "early": "⏱️ Early",
         "late": "⏱️ Late",
         "too_early": "⚠️ Too Early!",
         "too_late": "⚠️ Too Late!",
-        "pausa_ok": "GOOD REST!"
+        "pausa_ok": "REST OK!"
     },
     "challenge": {
         "title": "🏆 Challenge Mode",

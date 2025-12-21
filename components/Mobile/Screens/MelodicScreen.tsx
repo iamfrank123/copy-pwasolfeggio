@@ -301,22 +301,30 @@ export default function MelodicScreen() {
                             </div>
                         </div>
 
+                        {/* MIDI Requirement Info */}
+                        <div className="bg-amber-50/90 backdrop-blur-sm border border-amber-300 rounded-xl p-3 text-sm">
+                            <p className="font-bold text-amber-900 mb-1 flex items-center gap-2">
+                                <span>🎹</span>
+                                <span>{t('melodic.midi_required_title')}</span>
+                            </p>
+                            <p className="text-xs text-amber-800 leading-relaxed">
+                                {t('melodic.midi_required_desc')}
+                            </p>
+                        </div>
+
                         <button onClick={startGame} className="w-full bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 text-white font-black py-4 rounded-2xl shadow-xl active:scale-95 transition-transform flex items-center justify-center gap-3 text-xl mt-4 border-2 border-amber-400">
                             <span className="text-3xl">▶️</span>
                             <span>{t('common.start')}</span>
                         </button>
 
                         {/* Staff Preview */}
-                        <div className="bg-white/60 backdrop-blur-sm p-3 rounded-xl border border-gray-200 mt-2">
-                            <p className="text-xs font-bold text-gray-500 uppercase text-center mb-2">Anteprima Pentagramma</p>
-                            <div className="bg-white rounded-lg p-2 border border-gray-100">
-                                <svg viewBox="0 0 200 80" className="w-full h-auto">
-                                    {[0, 1, 2, 3, 4].map(i => (
-                                        <line key={i} x1="10" y1={20 + i * 10} x2="190" y2={20 + i * 10} stroke="#999" strokeWidth="0.5" />
-                                    ))}
-                                    <text x="15" y="45" fontSize="24" fill="#666">𝄞</text>
-                                </svg>
-                            </div>
+                        <div className="bg-slate-50/90 backdrop-blur-sm rounded-xl border border-gray-200 mt-2 p-4">
+                            <svg viewBox="0 0 200 100" className="w-full h-auto">
+                                {[0, 1, 2, 3, 4].map(i => (
+                                    <line key={i} x1="10" y1={30 + i * 12} x2="190" y2={30 + i * 12} stroke="#94a3b8" strokeWidth="1" />
+                                ))}
+                                <text x="15" y="60" fontSize="32" fill="#64748b">𝄞</text>
+                            </svg>
                         </div>
 
                         <div className="h-4"></div>

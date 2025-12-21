@@ -48,6 +48,8 @@
         "subtitle": "Suona le note corrette, nell'ottava giusta e a tempo.",
         "midi_warning_title": "Tastiera MIDI Richiesta",
         "midi_warning_desc": "Questa modalità funziona solo collegando una tastiera MIDI. Se non hai un cavo MIDI, prova la Rhythm Mode per esercitarti con il ritmo (tocco/click).",
+        "midi_required_title": "Tastiera MIDI Richiesta",
+        "midi_required_desc": "Questa modalità funziona SOLO con tastiera MIDI collegata. Per esercitarti senza MIDI, usa la modalità Rhythm con tapping su schermo.",
         "interval": "Intervallo:",
         "wrong_note": "❌ Nota Sbagliata!",
         "early": "⏱️ Presto",
