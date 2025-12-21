@@ -246,16 +246,6 @@ export default function ChallengeScreen() {
                             <span>Inizia Sfida</span>
                         </button>
 
-                        {/* Staff Preview */}
-                        <div className="bg-slate-50/90 backdrop-blur-sm rounded-xl border border-gray-200 mt-2 p-4">
-                            <svg viewBox="0 0 200 100" className="w-full h-auto">
-                                {[0, 1, 2, 3, 4].map(i => (
-                                    <line key={i} x1="10" y1={30 + i * 12} x2="190" y2={30 + i * 12} stroke="#94a3b8" strokeWidth="1" />
-                                ))}
-                                <text x="15" y="60" fontSize="32" fill="#64748b">𝄞</text>
-                            </svg>
-                        </div>
-
                         <div className="h-4"></div>
                     </div>
                 </div>

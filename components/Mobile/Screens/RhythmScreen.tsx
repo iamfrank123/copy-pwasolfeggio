@@ -445,7 +445,6 @@ export default function RhythmScreen() {
                             </div>
                         </div>
 
-                        {/* Start Button - Prominent */}
                         <button
                             onClick={startGame}
                             className="w-full bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 text-white font-black py-4 rounded-2xl shadow-xl active:scale-95 transition-transform flex items-center justify-center gap-3 text-xl mt-4 border-2 border-amber-400"
@@ -453,16 +452,6 @@ export default function RhythmScreen() {
                             <span className="text-3xl">▶️</span>
                             <span>{t('common.start')}</span>
                         </button>
-
-                        {/* Staff Preview */}
-                        <div className="bg-slate-50/90 backdrop-blur-sm rounded-xl border border-gray-200 mt-2 p-4">
-                            <svg viewBox="0 0 200 100" className="w-full h-auto">
-                                {[0, 1, 2, 3, 4].map(i => (
-                                    <line key={i} x1="10" y1={30 + i * 12} x2="190" y2={30 + i * 12} stroke="#94a3b8" strokeWidth="1" />
-                                ))}
-                                <text x="15" y="60" fontSize="32" fill="#64748b">𝄞</text>
-                            </svg>
-                        </div>
 
                         {/* Bottom Spacer for Safe Area */}
                         <div className="h-4"></div>
