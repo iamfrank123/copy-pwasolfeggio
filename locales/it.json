@@ -23,7 +23,13 @@
         "scrolling": "Scorrimento",
         "static": "Statico",
         "bpm": "BPM",
-        "notes_label": "Note:"
+        "notes_label": "Note:",
+        "mode": "Modalità",
+        "time_signature": "Tempo",
+        "speed": "Velocità",
+        "game_mode": "Modalità di Gioco",
+        "midi_connection": "Collegamento MIDI",
+        "midi_connection_sight_reading": "Collega la tastiera MIDI per suonare le note visualizzate sul pentagramma. L'app rileverà automaticamente l'input."
     },
     "stats": {
         "perfect": "Perfette",
@@ -66,8 +72,12 @@
         "touch_info": "📱 Tocca lo schermo",
         "score_label": "PUNTEGGIO",
         "combo_label": "COMBO",
-        "start_btn": "START CHALLENGE",
-        "mancato": "Mancato!"
+        "start_btn": "INIZIA SFIDA",
+        "mancato": "Mancato!",
+        "game_mode_title": "🎮 Modalità di Gioco",
+        "game_mode_desc_1": "• Usa MIDI per suonare le note corrette",
+        "game_mode_desc_2": "• Oppure tocca lo schermo per giocare senza MIDI",
+        "game_mode_desc_3": "• Colpisci le note quando passano sulla linea verde"
     },
     "pwa": {
         "install_title": "Installa App",

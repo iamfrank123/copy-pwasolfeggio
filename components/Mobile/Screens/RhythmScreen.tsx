@@ -373,7 +373,7 @@ export default function RhythmScreen() {
                                 <div className="flex gap-2">
                                     {/* Visual Mode */}
                                     <div className="flex-1">
-                                        <label className="text-xs font-bold text-gray-600 uppercase block mb-1">Modalità</label>
+                                        <label className="text-xs font-bold text-gray-600 uppercase block mb-1">{t('common.mode')}</label>
                                         <div className="flex gap-1.5">
                                             <button
                                                 onClick={() => setVisualMode('scrolling')}
@@ -392,7 +392,7 @@ export default function RhythmScreen() {
 
                                     {/* Time Signature */}
                                     <div className="flex-1">
-                                        <label className="text-xs font-bold text-gray-600 uppercase block mb-1">Tempo</label>
+                                        <label className="text-xs font-bold text-gray-600 uppercase block mb-1">{t('common.time_signature')}</label>
                                         <div className="flex gap-1.5">
                                             {(['3/4', '4/4', '6/8'] as const).map(sig => (
                                                 <button

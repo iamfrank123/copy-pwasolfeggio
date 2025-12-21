@@ -104,7 +104,7 @@ export default function SightReadingScreen() {
                         <div className="max-w-md mx-auto space-y-2.5">
                             {/* Key Signature */}
                             <div className="bg-white/90 backdrop-blur-sm p-2.5 rounded-xl shadow-sm border border-gray-100">
-                                <label className="text-xs font-bold text-gray-600 uppercase block mb-1.5">Tonalità</label>
+                                <label className="text-xs font-bold text-gray-600 uppercase block mb-1.5">{t('common.key')}</label>
                                 <div className="grid grid-cols-5 gap-1.5">
                                     {KEY_SIGNATURES.map(key => (
                                         <button
@@ -120,7 +120,7 @@ export default function SightReadingScreen() {
 
                             {/* Note Range - Compact */}
                             <div className="bg-white/90 backdrop-blur-sm p-2.5 rounded-xl shadow-sm border border-gray-100">
-                                <label className="text-xs font-bold text-gray-600 uppercase block mb-1.5">Intervallo</label>
+                                <label className="text-xs font-bold text-gray-600 uppercase block mb-1.5">{t('common.note_range')}</label>
                                 <div className="flex items-center gap-1.5">
                                     <input
                                         type="text"
@@ -144,10 +144,10 @@ export default function SightReadingScreen() {
                             <div className="bg-blue-50/80 backdrop-blur-sm border border-blue-200 rounded-xl p-3 text-sm text-blue-800">
                                 <p className="font-semibold mb-1 flex items-center gap-2">
                                     <span>🎹</span>
-                                    <span>Collegamento MIDI</span>
+                                    <span>{t('common.midi_connection')}</span>
                                 </p>
                                 <p className="text-xs text-blue-700">
-                                    Collega la tastiera MIDI per suonare le note visualizzate sul pentagramma. L'app rileverà automaticamente l'input.
+                                    {t('common.midi_connection_sight_reading')}
                                 </p>
                             </div>
 
@@ -172,11 +172,11 @@ export default function SightReadingScreen() {
                     <div className="absolute top-2 left-0 right-0 flex justify-center gap-4 z-20">
                         <div className="bg-white/90 backdrop-blur px-4 py-2 rounded-xl shadow-md border border-gray-200 flex gap-6">
                             <div className="flex flex-col items-center">
-                                <span className="text-xs font-bold text-green-600 uppercase">Corrette</span>
+                                <span className="text-xs font-bold text-green-600 uppercase">{t('stats.perfect')}</span>
                                 <span className="text-2xl font-bold text-green-700">{stats.perfect}</span>
                             </div>
                             <div className="flex flex-col items-center">
-                                <span className="text-xs font-bold text-red-500 uppercase">Sbagliate</span>
+                                <span className="text-xs font-bold text-red-500 uppercase">{t('stats.miss')}</span>
                                 <span className="text-2xl font-bold text-red-600">{stats.miss}</span>
                             </div>
                         </div>
@@ -186,7 +186,7 @@ export default function SightReadingScreen() {
                     {feedbackStatus !== 'idle' && (
                         <div className="absolute top-20 left-0 right-0 z-30 flex justify-center pointer-events-none">
                             <div className={`text-2xl font-black px-6 py-2 rounded-full shadow-lg ${feedbackStatus === 'correct' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'}`}>
-                                {feedbackStatus === 'correct' ? '✓ Corretto!' : '✗ Sbagliato'}
+                                {feedbackStatus === 'correct' ? `✓ ${t('common.correct')}` : `✗ ${t('stats.miss')}`}
                             </div>
                         </div>
                     )}

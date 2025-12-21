@@ -208,14 +208,14 @@ export default function ChallengeScreen() {
                         <div className="max-w-md mx-auto space-y-2.5">
                             <div className="bg-white/90 backdrop-blur-sm p-2.5 rounded-xl shadow-sm border border-gray-100">
                                 <div className="flex items-center justify-between mb-1.5">
-                                    <label className="text-xs font-bold text-gray-600 uppercase">Velocità</label>
-                                    <span className="text-lg font-black text-amber-600">{bpm} BPM</span>
+                                    <label className="text-xs font-bold text-gray-600 uppercase">{t('common.speed')}</label>
+                                    <span className="text-lg font-black text-amber-600">{bpm} {t('common.bpm')}</span>
                                 </div>
                                 <input type="range" min="30" max="180" value={bpm} onChange={(e) => setBpm(Number(e.target.value))} className="w-full h-1.5 accent-amber-500" />
                             </div>
 
                             <div className="bg-white/90 backdrop-blur-sm p-2.5 rounded-xl shadow-sm border border-gray-100">
-                                <label className="text-xs font-bold text-gray-600 uppercase block mb-1.5">Tonalità</label>
+                                <label className="text-xs font-bold text-gray-600 uppercase block mb-1.5">{t('common.key')}</label>
                                 <div className="grid grid-cols-5 gap-1.5">
                                     {KEY_SIGNATURES.map(key => (
                                         <button key={key} onClick={() => setKeySignature(key)} className={`py-2 rounded-lg text-sm font-bold transition-all ${keySignature === key ? 'bg-amber-500 text-white shadow-md scale-105' : 'bg-gray-100 text-gray-600'}`}>{key}</button>
@@ -224,7 +224,7 @@ export default function ChallengeScreen() {
                             </div>
 
                             <div className="bg-white/90 backdrop-blur-sm p-2.5 rounded-xl shadow-sm border border-gray-100">
-                                <label className="text-xs font-bold text-gray-600 uppercase block mb-1.5">Intervallo</label>
+                                <label className="text-xs font-bold text-gray-600 uppercase block mb-1.5">{t('common.note_range')}</label>
                                 <div className="flex items-center gap-1.5">
                                     <input type="text" value={noteRange.low} onChange={e => setNoteRange({ ...noteRange, low: e.target.value })} className="flex-1 py-1.5 px-2 text-sm rounded-lg border border-gray-200 text-center font-semibold focus:border-amber-400 focus:outline-none" placeholder="C4" />
                                     <span className="text-gray-400 text-sm">—</span>
@@ -235,18 +235,18 @@ export default function ChallengeScreen() {
                             <div className="bg-amber-50/80 backdrop-blur-sm border border-amber-200 rounded-xl p-3 text-sm text-amber-800">
                                 <p className="font-semibold mb-2 flex items-center gap-2">
                                     <span>🎮</span>
-                                    <span>Modalità di Gioco</span>
+                                    <span>{t('challenge.game_mode_title')}</span>
                                 </p>
                                 <ul className="text-xs text-amber-700 space-y-1">
-                                    <li>• Usa MIDI per suonare le note corrette</li>
-                                    <li>• Oppure tocca lo schermo per giocare senza MIDI</li>
-                                    <li>• Colpisci le note quando passano sulla linea verde</li>
+                                    <li>{t('challenge.game_mode_desc_1')}</li>
+                                    <li>{t('challenge.game_mode_desc_2')}</li>
+                                    <li>{t('challenge.game_mode_desc_3')}</li>
                                 </ul>
                             </div>
 
                             <button onClick={startGame} className="w-full bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 text-white font-black py-4 rounded-2xl shadow-xl active:scale-95 transition-transform flex items-center justify-center gap-3 text-xl mt-4 border-2 border-amber-400">
                                 <span className="text-3xl">▶️</span>
-                                <span>Inizia Sfida</span>
+                                <span>{t('challenge.start_btn')}</span>
                             </button>
 
                             <div className="h-4"></div>
@@ -260,11 +260,11 @@ export default function ChallengeScreen() {
                     <div className="absolute top-2 left-0 right-0 flex justify-center gap-4 z-20">
                         <div className="bg-white/90 backdrop-blur px-6 py-2 rounded-xl shadow-md border border-gray-200 flex gap-8">
                             <div className="flex flex-col items-center">
-                                <span className="text-xs font-bold text-blue-600 uppercase">Score</span>
+                                <span className="text-xs font-bold text-blue-600 uppercase">{t('challenge.score_label')}</span>
                                 <span className="text-3xl font-bold text-blue-700">{score}</span>
                             </div>
                             <div className="flex flex-col items-center">
-                                <span className="text-xs font-bold text-orange-500 uppercase">Combo</span>
+                                <span className="text-xs font-bold text-orange-500 uppercase">{t('challenge.combo_label')}</span>
                                 <span className="text-3xl font-bold text-orange-600">{combo}x</span>
                             </div>
                         </div>

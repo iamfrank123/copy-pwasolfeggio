@@ -257,7 +257,7 @@ export default function MelodicScreen() {
                             <div className="bg-white/90 backdrop-blur-sm p-2.5 rounded-xl shadow-sm border border-gray-100">
                                 <div className="flex gap-2">
                                     <div className="flex-1">
-                                        <label className="text-xs font-bold text-gray-600 uppercase block mb-1">Tempo</label>
+                                        <label className="text-xs font-bold text-gray-600 uppercase block mb-1">{t('common.time_signature')}</label>
                                         <div className="flex gap-1.5">
                                             {(['3/4', '4/4'] as const).map(sig => (
                                                 <button key={sig} onClick={() => setTimeSignature(sig)} className={`flex-1 py-1.5 rounded-lg text-xs font-bold transition-all ${timeSignature === sig ? 'bg-amber-600 text-white shadow-md' : 'bg-gray-100 text-gray-600'}`}>{sig}</button>
@@ -265,7 +265,7 @@ export default function MelodicScreen() {
                                         </div>
                                     </div>
                                     <div className="flex-1">
-                                        <label className="text-xs font-bold text-gray-600 uppercase block mb-1">Tonalità</label>
+                                        <label className="text-xs font-bold text-gray-600 uppercase block mb-1">{t('common.key')}</label>
                                         <select value={keySignature} onChange={e => setKeySignature(e.target.value as any)} className="w-full py-1.5 px-2 rounded-lg border border-gray-200 text-xs font-semibold focus:border-amber-400 focus:outline-none">
                                             {KEY_SIGS.map(k => (<option key={k} value={k}>{k}</option>))}
                                         </select>
@@ -274,7 +274,7 @@ export default function MelodicScreen() {
                             </div>
 
                             <div className="bg-white/90 backdrop-blur-sm p-2.5 rounded-xl shadow-sm border border-gray-100">
-                                <label className="text-xs font-bold text-gray-600 uppercase block mb-1.5">Note</label>
+                                <label className="text-xs font-bold text-gray-600 uppercase block mb-1.5">{t('common.notes_label')}</label>
                                 <div className="flex gap-1.5">
                                     {[{ id: 'w', icon: '𝅝' }, { id: 'h', icon: '𝅗𝅥' }, { id: 'q', icon: '♩' }, { id: '8', icon: '♪' }, { id: '16', icon: '♬' }].map(opt => (
                                         <button key={opt.id} onClick={() => { if (allowedDurations.includes(opt.id as any)) setAllowedDurations(allowedDurations.filter(d => d !== opt.id)); else setAllowedDurations([...allowedDurations, opt.id as any]); }} className={`flex-1 py-2 rounded-lg font-bold text-lg transition-all ${allowedDurations.includes(opt.id as any) ? 'bg-amber-500 text-white shadow-md scale-105' : 'bg-gray-100 text-gray-400'}`}>{opt.icon}</button>
@@ -283,7 +283,7 @@ export default function MelodicScreen() {
                             </div>
 
                             <div className="bg-white/90 backdrop-blur-sm p-2.5 rounded-xl shadow-sm border border-gray-100">
-                                <label className="text-xs font-bold text-gray-600 uppercase block mb-1.5">Intervallo</label>
+                                <label className="text-xs font-bold text-gray-600 uppercase block mb-1.5">{t('common.note_range')}</label>
                                 <div className="flex items-center gap-1.5">
                                     <input type="text" value={minNote} onChange={e => setMinNote(e.target.value)} className="flex-1 py-1.5 px-2 text-sm rounded-lg border border-gray-200 text-center font-semibold focus:border-amber-400 focus:outline-none" placeholder="C4" />
                                     <span className="text-gray-400 text-sm">—</span>
@@ -295,11 +295,11 @@ export default function MelodicScreen() {
                                 <div className="flex flex-wrap gap-1.5">
                                     <label className={`flex-1 min-w-[90px] flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg cursor-pointer transition-all ${includeRests ? 'bg-amber-500 text-white shadow-md' : 'bg-gray-100 text-gray-600'}`}>
                                         <input type="checkbox" checked={includeRests} onChange={e => setIncludeRests(e.target.checked)} className="hidden" />
-                                        <span className="text-xs font-semibold">🎵 Pause</span>
+                                        <span className="text-xs font-semibold">🎵 {t('common.add_rests')}</span>
                                     </label>
                                     <label className={`flex-1 min-w-[90px] flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg cursor-pointer transition-all ${isMetronomeEnabled ? 'bg-amber-500 text-white shadow-md' : 'bg-gray-100 text-gray-600'}`}>
                                         <input type="checkbox" checked={isMetronomeEnabled} onChange={e => setIsMetronomeEnabled(e.target.checked)} className="hidden" />
-                                        <span className="text-xs font-semibold">⏱️ Metronomo</span>
+                                        <span className="text-xs font-semibold">⏱️ {t('common.metronome')}</span>
                                     </label>
                                 </div>
                             </div>
@@ -329,16 +329,16 @@ export default function MelodicScreen() {
             {isPlaying && (
                 <div className="flex-1 flex flex-col bg-stone-50 overflow-hidden relative">
                     <div className="absolute top-2 left-0 right-0 flex justify-center space-x-4 pointer-events-none z-30">
-                        <div className="bg-white/90 px-4 py-2 rounded-lg border border-gray-200 shadow-sm"><span className="text-green-600 font-bold block text-sm">Perfect</span><span className="text-2xl font-bold text-green-700">{stats.perfect}</span></div>
-                        <div className="bg-white/90 px-4 py-2 rounded-lg border border-gray-200 shadow-sm"><span className="text-yellow-600 font-bold block text-sm">Good</span><span className="text-2xl font-bold text-yellow-700">{stats.good}</span></div>
-                        <div className="bg-white/90 px-4 py-2 rounded-lg border border-gray-200 shadow-sm"><span className="text-red-500 font-bold block text-sm">Miss</span><span className="text-2xl font-bold text-red-600">{stats.miss}</span></div>
-                        {combo > 1 && (<div className="bg-white/90 px-4 py-2 rounded-lg border border-orange-200 shadow-sm"><span className="text-orange-500 font-bold block text-sm">Combo</span><span className="text-2xl font-bold text-orange-600">{combo}x</span></div>)}
+                        <div className="bg-white/90 px-4 py-2 rounded-lg border border-gray-200 shadow-sm"><span className="text-green-600 font-bold block text-sm">{t('stats.perfect')}</span><span className="text-2xl font-bold text-green-700">{stats.perfect}</span></div>
+                        <div className="bg-white/90 px-4 py-2 rounded-lg border border-gray-200 shadow-sm"><span className="text-yellow-600 font-bold block text-sm">{t('stats.good')}</span><span className="text-2xl font-bold text-yellow-700">{stats.good}</span></div>
+                        <div className="bg-white/90 px-4 py-2 rounded-lg border border-gray-200 shadow-sm"><span className="text-red-500 font-bold block text-sm">{t('stats.miss')}</span><span className="text-2xl font-bold text-red-600">{stats.miss}</span></div>
+                        {combo > 1 && (<div className="bg-white/90 px-4 py-2 rounded-lg border border-orange-200 shadow-sm"><span className="text-orange-500 font-bold block text-sm">{t('rhythm.combo')}</span><span className="text-2xl font-bold text-orange-600">{combo}x</span></div>)}
                     </div>
 
                     {countdown !== null && (
                         <div className="absolute top-24 left-0 right-0 flex items-center justify-center z-40 pointer-events-none">
                             <div className="text-center bg-white/90 px-6 py-2 rounded-xl shadow-lg border border-amber-100">
-                                <div className="text-xl font-bold text-amber-600 mb-0.5">{countdown > 1 ? 'Attendere' : 'Pronti'}</div>
+                                <div className="text-xl font-bold text-amber-600 mb-0.5">{countdown > 1 ? t('rhythm.wait') : t('rhythm.ready')}</div>
                                 <div className="text-4xl font-black text-amber-800">{countdown}</div>
                             </div>
                         </div>

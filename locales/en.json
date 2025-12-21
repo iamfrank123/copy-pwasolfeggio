@@ -23,7 +23,13 @@
         "scrolling": "Scrolling",
         "static": "Static",
         "bpm": "BPM",
-        "notes_label": "Notes:"
+        "notes_label": "Notes:",
+        "mode": "Mode",
+        "time_signature": "Time Sig.",
+        "speed": "Speed",
+        "game_mode": "Game Mode",
+        "midi_connection": "MIDI Connection",
+        "midi_connection_sight_reading": "Connect your MIDI keyboard to play the notes shown on the staff. The app will automatically detect input."
     },
     "stats": {
         "perfect": "Perfect",
@@ -67,7 +73,11 @@
         "score_label": "SCORE",
         "combo_label": "COMBO",
         "start_btn": "START CHALLENGE",
-        "mancato": "Missed!"
+        "mancato": "Missed!",
+        "game_mode_title": "🎮 Game Mode",
+        "game_mode_desc_1": "• Use MIDI to play correct notes",
+        "game_mode_desc_2": "• Or tap the screen to play without MIDI",
+        "game_mode_desc_3": "• Hit the notes as they cross the green line"
     },
     "pwa": {
         "install_title": "Install App",
