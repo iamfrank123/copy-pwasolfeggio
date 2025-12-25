@@ -56,15 +56,18 @@ export default function ScrollingStaff({
             // Create notes (take first 20)
             const displayNotes = notes.slice(0, 20);
 
-            // Use dynamic width based on note count, but cap it or scale it
-            const noteSpacing = 110;
-            const contentWidth = Math.max(750, displayNotes.length * noteSpacing + 80);
+            // Riduci ulteriormente per mobile landscape
+            const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+            const noteSpacing = isMobile ? 90 : 110;
+            const contentWidth = isMobile 
+                ? Math.min(window.innerWidth - 100, displayNotes.length * noteSpacing + 150)
+                : Math.max(750, displayNotes.length * noteSpacing + 80);
             const height = 250;
             renderer.resize(contentWidth, height);
 
             const context = renderer.getContext();
 
-            // Create a stave - aumentato margine sinistro
+            // Create a stave
             const stave = new VF.Stave(10, 40, contentWidth - 20);
 
             // Force Treble clef as requested to prevent visual jumping
@@ -108,12 +111,6 @@ export default function ScrollingStaff({
             const svg = renderDiv.querySelector('svg');
             if (svg) {
                 svg.style.transition = 'all 0.3s ease-out';
-                
-                // SPOSTA IL PENTAGRAMMA A DESTRA CON MARGINE SVG SOLO SU MOBILE
-                const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-                if (isMobile) {
-                    svg.style.marginLeft = '50px';
-                }
 
                 // Apply colors to noteheads
                 const noteheads = svg.querySelectorAll('.vf-notehead');
