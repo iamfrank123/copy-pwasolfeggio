@@ -138,6 +138,12 @@ renderer.resize(contentWidth, height);
             }
 
             console.log('✅ Staff rendered successfully');
+            
+            // Forza lo scroll all'inizio SOLO su mobile
+            const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+            if (renderDiv && isMobile) {
+                renderDiv.scrollLeft = 0;
+            }
 
         } catch (error) {
             console.error('❌ VexFlow rendering error:', error);
@@ -186,6 +192,7 @@ renderer.resize(contentWidth, height);
         </div>
     );
 }
+
 
 
 
