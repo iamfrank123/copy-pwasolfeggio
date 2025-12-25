@@ -65,7 +65,7 @@ renderer.resize(contentWidth, height);
             const context = renderer.getContext();
 
             // Create a stave
-            const stave = new VF.Stave(30, 40, contentWidth - 50); // Ancora più margine a sinistra
+            const stave = new VF.Stave(50, 40, contentWidth - 100); // Margine sinistro 50px
 
             // Force Treble clef as requested to prevent visual jumping
             const clef = 'treble';
@@ -186,6 +186,7 @@ renderer.resize(contentWidth, height);
         </div>
     );
 }
+
 
 
 
