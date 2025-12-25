@@ -57,13 +57,13 @@ export default function ScrollingStaff({
             const displayNotes = notes.slice(0, 20);
 
             // Riduci ulteriormente per mobile landscape
-            const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-            const noteSpacing = isMobile ? 90 : 110;
-            const contentWidth = isMobile 
-                ? Math.min(window.innerWidth - 100, displayNotes.length * noteSpacing + 150)
-                : Math.max(750, displayNotes.length * noteSpacing + 80);
-            const height = 250;
-            renderer.resize(contentWidth, height);
+const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+const noteSpacing = isMobile ? 100 : 110; // Aumentato da 90 a 100
+const contentWidth = isMobile 
+    ? Math.min(window.innerWidth - 40, displayNotes.length * noteSpacing + 150) // Ridotto margine da 100 a 40
+    : Math.max(750, displayNotes.length * noteSpacing + 80);
+const height = 250;
+renderer.resize(contentWidth, height);
 
             const context = renderer.getContext();
 
@@ -189,3 +189,4 @@ export default function ScrollingStaff({
         </div>
     );
 }
+
