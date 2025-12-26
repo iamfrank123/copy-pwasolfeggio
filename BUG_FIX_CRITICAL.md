@@ -10,9 +10,9 @@ Il problema era nella **conversione dei timestamp MIDI** in tempo audio.
 
 #### Cosa Stava Succedendo (SBAGLIATO ❌):
 
-```typescript
+```typescript  
 // MIDI Manager riceveva:
-message.timeStamp = 10000ms  // DOMHighResTimeStamp (performance.now())
+message.timeStamp = 10000ms  // DOMHighResTimeStamp (performance.now()) .
 
 // Convertiva a secondi e applicava compensazione:
 compensatedTime = (10000 / 1000) - 0.025 = 9.975s
