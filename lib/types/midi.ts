@@ -11,7 +11,9 @@ export interface MIDINoteEvent {
     type: 'noteOn' | 'noteOff';
     pitch: number; // MIDI note number
     velocity: number;
-    timestamp: number; // in milliseconds
+    timestamp: number; // in milliseconds (original timestamp)
+    compensatedTimestamp?: number; // Timestamp with latency compensation applied (in seconds for audio time)
+    source: 'midi' | 'touch' | 'mouse' | 'audio'; // Input source
 }
 
 export interface MIDIConnectionStatus {

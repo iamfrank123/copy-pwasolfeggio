@@ -10,6 +10,9 @@ import { RhythmNote } from '@/lib/generator/rhythm-generator';
 import { useRhythmAudio } from '@/hooks/useRhythmAudio';
 import OrientationPrompt from '@/components/Layout/OrientationPrompt';
 import { useTranslation } from '@/context/LanguageContext';
+import { useMIDIInput } from '@/hooks/useMIDIInput';
+import { MIDINoteEvent } from '@/lib/types/midi';
+import MIDILatencySettings from '@/components/Settings/MIDILatencySettings';
 
 // Game Constants
 const SPAWN_X = 900;
@@ -42,6 +45,9 @@ export default function RhythmPage() {
     // Audio Settings
     const [isMetronomeEnabled, setIsMetronomeEnabled] = useState(true);
     const [isSoundEnabled, setIsSoundEnabled] = useState(true);
+
+    // MIDI Settings
+    const [showMIDISettings, setShowMIDISettings] = useState(false);
 
     // Audio Hook
     const { initAudio, startMetronome, stopMetronome, setBpm: updateAudioBpm, setTimeSignature: updateAudioSignature, playDrumSound, getAudioTime } = useRhythmAudio();
@@ -441,6 +447,85 @@ export default function RhythmPage() {
         });
     }, [isPlaying, isSoundEnabled, playDrumSound, getAudioTime, t]);
 
+    // MIDI Handler - Uses compensated timestamp for accurate timing evaluation
+    const handleMIDINote = useCallback((event: MIDINoteEvent) => {
+        // Only handle note on events (note off is ignored for rhythm exercises)
+        if (event.type !== 'noteOn') return;
+        if (!isPlaying) return;
+
+        // Use compensatedTimestamp if available (MIDI input with latency compensation)
+        // Otherwise fall back to current audio time (for non-MIDI inputs)
+        const evaluationTime = event.compensatedTimestamp ?? getAudioTime();
+
+        setActiveNotes(currentNotes => {
+            // Algorithm: Find closest pending note to Evaluation Time
+            const candidates = currentNotes.filter(n => n.status === 'pending' && n.note.duration !== 'bar');
+            if (candidates.length === 0) return currentNotes;
+
+            // Sort by time difference using compensated timestamp
+            candidates.sort((a, b) => Math.abs(a.targetTime - evaluationTime) - Math.abs(b.targetTime - evaluationTime));
+            const target = candidates[0];
+
+            if (!target) return currentNotes;
+
+            // Time Difference in Seconds (using compensated time for MIDI)
+            const timeDiff = Math.abs(target.targetTime - evaluationTime);
+
+            // Define Windows in Seconds
+            const PERFECT_WINDOW_S = 0.10; // 100ms total window
+            const GOOD_WINDOW_S = 0.15;    // 150ms total window
+
+            // Handle rests
+            if (target.note.isRest) {
+                if (timeDiff < GOOD_WINDOW_S) {
+                    setCombo(0);
+                    setStats(s => ({ ...s, miss: s.miss + 1 }));
+                    setFeedback({ text: t('rhythm.rest_warning'), color: 'text-red-500' });
+                    setTimeout(() => setFeedback(null), 500);
+                    return currentNotes.map(n => n.id === target.id ? { ...n, status: 'miss' } : n);
+                }
+                return currentNotes;
+            }
+
+            let newStatus: RhythmGameNote['status'] = 'pending';
+            let points = 0;
+
+            if (timeDiff <= PERFECT_WINDOW_S) {
+                newStatus = 'match_perfect';
+                points = SCORE_PERFECT;
+                setStats(s => ({ ...s, perfect: s.perfect + 1 }));
+                setFeedback({ text: `${t('rhythm.perfect')} +5`, color: 'text-green-500' });
+                scoredNoteIds.current.add(target.id);
+            } else if (timeDiff <= GOOD_WINDOW_S) {
+                newStatus = 'match_good';
+                points = SCORE_GOOD;
+                setStats(s => ({ ...s, good: s.good + 1 }));
+                setFeedback({ text: `${t('rhythm.good')} +3`, color: 'text-yellow-500' });
+                scoredNoteIds.current.add(target.id);
+            } else {
+                // Too far from target - ignore
+                if (timeDiff > 0.2) return currentNotes;
+
+                newStatus = 'miss';
+                setCombo(0);
+                setStats(s => ({ ...s, miss: s.miss + 1 }));
+                setFeedback({ text: t('rhythm.miss'), color: 'text-red-500' });
+            }
+
+            if (points > 0) {
+                if (isSoundEnabled) playDrumSound();
+                setScore(s => s + points);
+                setCombo(c => c + 1);
+            }
+            setTimeout(() => setFeedback(null), 500);
+
+            return currentNotes.map(n => n.id === target.id ? { ...n, status: newStatus } : n);
+        });
+    }, [isPlaying, isSoundEnabled, playDrumSound, getAudioTime, t]);
+
+    // Connect MIDI input
+    useMIDIInput(handleMIDINote);
+
     return (
         <div className="min-h-screen bg-stone-50">
             <Header />
@@ -567,7 +652,7 @@ export default function RhythmPage() {
                         </div>
                     </div>
 
-                    {/* BOTTOM ROW: Settings (Rests, Metronome, Sounds) */}
+                    {/* BOTTOM ROW: Settings (Rests, Metronome, Sounds, MIDI) */}
                     <div className="flex flex-wrap items-center justify-center sm:justify-start gap-6 pt-2 border-t border-gray-50">
                         <label className="flex items-center space-x-2 cursor-pointer group">
                             <input type="checkbox" checked={includeRests} onChange={e => setIncludeRests(e.target.checked)} className="w-5 h-5 text-amber-600 rounded focus:ring-amber-500" />
@@ -583,6 +668,14 @@ export default function RhythmPage() {
                             <input type="checkbox" checked={isSoundEnabled} onChange={e => setIsSoundEnabled(e.target.checked)} className="w-5 h-5 text-amber-600 rounded focus:ring-amber-500" />
                             <span className="text-gray-700 font-medium group-hover:text-amber-700 transition">{t('common.sounds')}</span>
                         </label>
+
+                        <button
+                            onClick={(e) => { e.stopPropagation(); setShowMIDISettings(true); }}
+                            className="flex items-center space-x-2 px-3 py-1.5 bg-blue-50 hover:bg-blue-100 border border-blue-200 rounded-lg transition group"
+                        >
+                            <span className="text-xl">🎹</span>
+                            <span className="text-blue-700 font-medium group-hover:text-blue-800 transition text-sm">MIDI Settings</span>
+                        </button>
                     </div>
 
                 </div>
@@ -642,6 +735,18 @@ export default function RhythmPage() {
                     )}
 
                 </div>
+
+                {/* MIDI Settings Modal */}
+                {showMIDISettings && (
+                    <div
+                        className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
+                        onClick={() => setShowMIDISettings(false)}
+                    >
+                        <div onClick={(e) => e.stopPropagation()}>
+                            <MIDILatencySettings onClose={() => setShowMIDISettings(false)} />
+                        </div>
+                    </div>
+                )}
             </main >
         </div >
     );

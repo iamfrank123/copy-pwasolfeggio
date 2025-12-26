@@ -72,17 +72,17 @@ export default function MelodicSolfegePage() {
         const played = event.pitch; // The MIDI pitch number
         if (!isPlaying || !played) return;
 
-        const currentTime = getAudioTime();
+        // Use compensatedTimestamp if available (MIDI with latency compensation)
+        // Otherwise fall back to current audio time
+        const evaluationTime = event.compensatedTimestamp ?? getAudioTime();
 
         setActiveNotes(currentNotes => {
             const candidates = currentNotes.filter(n => n.status === 'pending' && n.note.duration !== 'bar' && !n.note.isRest);
             if (candidates.length === 0) return currentNotes;
-            candidates.sort((a, b) => Math.abs(a.targetTime - currentTime) - Math.abs(b.targetTime - currentTime));
+            candidates.sort((a, b) => Math.abs(a.targetTime - evaluationTime) - Math.abs(b.targetTime - evaluationTime));
 
             // Fix: Prevent duplicate consecutive notes from both being validated
             // Filter candidates to only include the first note with matching MIDI number
-            // This ensures that if there are 2 consecutive notes with the same pitch,
-            // only the first one (closest to current time) will be validated
             const matchingCandidates = candidates.filter(n =>
                 n.note.generated && n.note.generated.midiNumber === played
             );
@@ -91,7 +91,7 @@ export default function MelodicSolfegePage() {
             const target = matchingCandidates.length > 0 ? matchingCandidates[0] : candidates[0];
             if (!target || !target.note.generated) return currentNotes;
 
-            const timeDiff = target.targetTime - currentTime; // Signed: positive = early, negative = late
+            const timeDiff = target.targetTime - evaluationTime; // Signed: positive = early, negative = late
             const absTimeDiff = Math.abs(timeDiff);
             const PERFECT_WINDOW_S = 0.10;
             const GOOD_WINDOW_S = 0.15;

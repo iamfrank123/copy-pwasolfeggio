@@ -1,9 +1,10 @@
 /**
  * Web MIDI API Manager
- * Handles MIDI device connection and note events
+ * Handles MIDI device connection and note events with latency compensation
  */
 
 import { MIDINoteEvent, MIDIConnectionStatus, MIDIInputDevice } from '@/lib/types/midi';
+import { latencyConfig } from './latency-config';
 
 class MIDIManager {
     private midiAccess: MIDIAccess | null = null;
@@ -11,6 +12,17 @@ class MIDIManager {
     private noteCallback: ((event: MIDINoteEvent) => void) | null = null;
 
     async requestAccess(): Promise<MIDIConnectionStatus> {
+        // SSR/Build safety check
+        if (typeof window === 'undefined' || typeof navigator === 'undefined') {
+            return {
+                hasAccess: false,
+                isSupported: false,
+                devices: [],
+                selectedDevice: null,
+                error: 'MIDI not available in server environment'
+            };
+        }
+
         if (!navigator.requestMIDIAccess) {
             return {
                 hasAccess: false,
@@ -92,6 +104,9 @@ class MIDIManager {
                 pitch: note,
                 velocity,
                 timestamp: message.timeStamp,
+                // Apply latency compensation: convert to seconds and compensate
+                compensatedTimestamp: latencyConfig.compensateTimestamp(message.timeStamp / 1000, true),
+                source: 'midi',
             });
         } else if (command === 8 || (command === 9 && velocity === 0)) {
             // Note Off
@@ -100,6 +115,8 @@ class MIDIManager {
                 pitch: note,
                 velocity: 0,
                 timestamp: message.timeStamp,
+                compensatedTimestamp: latencyConfig.compensateTimestamp(message.timeStamp / 1000, true),
+                source: 'midi',
             });
         }
     }
@@ -112,6 +129,13 @@ class MIDIManager {
 
     onNoteEvent(callback: (event: MIDINoteEvent) => void): void {
         this.noteCallback = callback;
+    }
+
+    /**
+     * Check if MIDI is connected and active
+     */
+    isConnected(): boolean {
+        return this.activeInput !== null;
     }
 }
 
