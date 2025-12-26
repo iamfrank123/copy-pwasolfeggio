@@ -393,8 +393,8 @@ export default function RhythmPage() {
             const timeDiff = Math.abs(target.targetTime - currentTime);
 
             // Define Windows in Seconds
-            const PERFECT_WINDOW_S = 0.10; // 50ms
-            const GOOD_WINDOW_S = 0.15;   // 100ms
+            const PERFECT_WINDOW_S = 0.20; // 50ms
+            const GOOD_WINDOW_S = 0.30;   // 100ms
             // Miss window? If > 0.15s, maybe ignore click or count as miss?
             // Existing logic enforced auto-miss only if passed.
             // Here we treat click as attempt.
