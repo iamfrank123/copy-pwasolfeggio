@@ -19,7 +19,7 @@ export interface LatencyConfig {
 
 const DEFAULT_CONFIG: LatencyConfig = {
   enabled: true,
-  offsetMs: 50, // Default 25ms based on typical MIDI cable latency
+  offsetMs: 25, // Default 25ms based on typical MIDI cable latency
   minOffsetMs: 0,
   maxOffsetMs: 100,
 };
@@ -121,10 +121,26 @@ class LatencyConfigManager {
    * @returns Compensated timestamp
    */
   compensateTimestamp(timestamp: number, isSeconds: boolean = false): number {
-    if (!this.config.enabled) return timestamp;
+    if (!this.config.enabled) {
+      console.log('⚠️ MIDI Latency Compensation is DISABLED');
+      return timestamp;
+    }
 
     const offset = isSeconds ? this.getOffsetSeconds() : this.getOffsetMs();
-    return timestamp - offset; // Subtract offset to "move the event earlier"
+    const compensated = timestamp - offset;
+    
+    // DEBUG: Log compensation
+    console.log('🔧 Applying MIDI Compensation:', {
+      enabled: this.config.enabled,
+      offsetMs: this.config.offsetMs,
+      offsetSeconds: this.getOffsetSeconds(),
+      originalTimestamp: timestamp.toFixed(4),
+      compensatedTimestamp: compensated.toFixed(4),
+      delta: offset.toFixed(4),
+      unit: isSeconds ? 'seconds' : 'milliseconds'
+    });
+    
+    return compensated; // Subtract offset to "move the event earlier"
   }
 }
 

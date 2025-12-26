@@ -453,9 +453,24 @@ export default function RhythmPage() {
         if (event.type !== 'noteOn') return;
         if (!isPlaying) return;
 
-        // Use compensatedTimestamp if available (MIDI input with latency compensation)
-        // Otherwise fall back to current audio time (for non-MIDI inputs)
-        const evaluationTime = event.compensatedTimestamp ?? getAudioTime();
+        // For MIDI input: get current audio time and apply compensation
+        // For other inputs: just use current audio time
+        const currentAudioTime = getAudioTime();
+        const evaluationTime = event.source === 'midi' 
+            ? event.compensatedTimestamp ?? currentAudioTime
+            : currentAudioTime;
+
+        // DEBUG: Log compensation info
+        if (event.source === 'midi') {
+            console.log('🎹 MIDI Input Debug:', {
+                currentAudioTime: currentAudioTime.toFixed(4),
+                compensatedTimestamp: event.compensatedTimestamp?.toFixed(4),
+                evaluationTime: evaluationTime.toFixed(4),
+                offsetApplied: event.compensatedTimestamp ? 
+                    ((currentAudioTime - event.compensatedTimestamp) * 1000).toFixed(1) + 'ms' : 
+                    'N/A'
+            });
+        }
 
         setActiveNotes(currentNotes => {
             // Algorithm: Find closest pending note to Evaluation Time
@@ -523,7 +538,14 @@ export default function RhythmPage() {
         });
     }, [isPlaying, isSoundEnabled, playDrumSound, getAudioTime, t]);
 
-    // Connect MIDI input
+    // Connect MIDI input and provide audio time reference
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            const { midiManager } = require('@/lib/midi/web-midi');
+            midiManager.setAudioTimeGetter(getAudioTime);
+        }
+    }, [getAudioTime]);
+
     useMIDIInput(handleMIDINote);
 
     return (

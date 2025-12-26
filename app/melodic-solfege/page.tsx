@@ -150,7 +150,14 @@ export default function MelodicSolfegePage() {
         });
     }, [isPlaying, getAudioTime, t]);
 
-    // MIDI hook: register handler
+    // MIDI hook: register handler and setup audio time reference
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            const { midiManager } = require('@/lib/midi/web-midi');
+            midiManager.setAudioTimeGetter(getAudioTime);
+        }
+    }, [getAudioTime]);
+
     useMIDIInput(handleMIDINote);
 
     useEffect(() => {

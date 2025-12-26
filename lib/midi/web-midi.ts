@@ -10,6 +10,15 @@ class MIDIManager {
     private midiAccess: MIDIAccess | null = null;
     private activeInput: MIDIInput | null = null;
     private noteCallback: ((event: MIDINoteEvent) => void) | null = null;
+    private getAudioTime: (() => number) | null = null;
+
+    /**
+     * Set the audio time getter function
+     * This is needed to convert MIDI timestamps to audio time
+     */
+    setAudioTimeGetter(getter: () => number): void {
+        this.getAudioTime = getter;
+    }
 
     async requestAccess(): Promise<MIDIConnectionStatus> {
         // SSR/Build safety check
@@ -96,6 +105,12 @@ class MIDIManager {
         const velocity = message.data[2];
         const command = status >> 4;
 
+        // Get current audio time (when the MIDI event is received)
+        const currentAudioTime = this.getAudioTime ? this.getAudioTime() : 0;
+        
+        // Apply latency compensation: subtract the offset to "move the event earlier"
+        const compensatedAudioTime = latencyConfig.compensateTimestamp(currentAudioTime, true);
+
         // Note On: command = 9, Note Off: command = 8
         if (command === 9 && velocity > 0) {
             // Note On
@@ -104,8 +119,8 @@ class MIDIManager {
                 pitch: note,
                 velocity,
                 timestamp: message.timeStamp,
-                // Apply latency compensation: convert to seconds and compensate
-                compensatedTimestamp: latencyConfig.compensateTimestamp(message.timeStamp / 1000, true),
+                // Pass the compensated audio time
+                compensatedTimestamp: compensatedAudioTime,
                 source: 'midi',
             });
         } else if (command === 8 || (command === 9 && velocity === 0)) {
@@ -115,7 +130,7 @@ class MIDIManager {
                 pitch: note,
                 velocity: 0,
                 timestamp: message.timeStamp,
-                compensatedTimestamp: latencyConfig.compensateTimestamp(message.timeStamp / 1000, true),
+                compensatedTimestamp: compensatedAudioTime,
                 source: 'midi',
             });
         }
