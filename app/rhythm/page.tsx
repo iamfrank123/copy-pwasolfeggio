@@ -487,8 +487,8 @@ export default function RhythmPage() {
             const timeDiff = Math.abs(target.targetTime - evaluationTime);
 
             // Define Windows in Seconds
-            const PERFECT_WINDOW_S = 0.10; // 100ms total window
-            const GOOD_WINDOW_S = 0.15;    // 150ms total window
+            const PERFECT_WINDOW_S = 0.20; // 100ms total window
+            const GOOD_WINDOW_S = 0.30;    // 150ms total window
 
             // Handle rests
             if (target.note.isRest) {
