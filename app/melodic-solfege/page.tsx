@@ -10,6 +10,7 @@ import { useMIDIInput } from '@/hooks/useMIDIInput';
 import { MIDINoteEvent } from '@/lib/types/midi';
 import { useTranslation } from '@/context/LanguageContext';
 import { midiManager } from '@/lib/midi/web-midi';
+import MIDILatencySettings from '@/components/Settings/MIDILatencySettings';
 
 // Game constants
 const SPAWN_X = 900;
@@ -29,6 +30,7 @@ export default function MelodicSolfegePage() {
     const [timeSignature, setTimeSignature] = useState<'3/4' | '4/4' | '6/8'>('4/4');
     const visualMode = 'static'; // Force Static
     const [isMetronomeEnabled, setIsMetronomeEnabled] = useState(true);
+    const [showMIDISettings, setShowMIDISettings] = useState(false);
 
     const { initAudio, startMetronome, stopMetronome, setBpm: updateAudioBpm, setTimeSignature: updateAudioSignature, getAudioTime } = useRhythmAudio();
 
@@ -359,6 +361,17 @@ export default function MelodicSolfegePage() {
                             </p>
                         </div>
                     </div>
+                    
+                    {/* MIDI Settings Button - Always Visible Above Control Panel */}
+                    <div className="mt-6 mb-4">
+                        <button
+                            onClick={(e) => { e.stopPropagation(); setShowMIDISettings(true); }}
+                            className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-blue-500 hover:bg-blue-600 active:bg-blue-700 text-white font-bold rounded-lg shadow-md hover:shadow-lg transition-all border-2 border-blue-600"
+                        >
+                            <span className="text-xl">🎹</span>
+                            <span>MIDI Settings</span>
+                        </button>
+                    </div>
                 </div>
 
 
@@ -483,6 +496,17 @@ export default function MelodicSolfegePage() {
                     <StaticMelodicStaff notes={activeNotes} timeSignature={timeSignature} />
                 </div>
 
+                {/* MIDI Settings Modal */}
+                {showMIDISettings && (
+                    <div
+                        className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
+                        onClick={() => setShowMIDISettings(false)}
+                    >
+                        <div onClick={(e) => e.stopPropagation()}>
+                            <MIDILatencySettings onClose={() => setShowMIDISettings(false)} />
+                        </div>
+                    </div>
+                )}
 
             </main>
         </div>

@@ -14,6 +14,7 @@ import { useMIDIInput } from '@/hooks/useMIDIInput';
 import { MIDINoteEvent } from '@/lib/types/midi';
 import MIDILatencySettings from '@/components/Settings/MIDILatencySettings';
 import { midiManager } from '@/lib/midi/web-midi';
+import { midiManager } from '@/lib/midi/web-midi';
 
 // Game Constants
 const SPAWN_X = 900;
@@ -561,6 +562,17 @@ export default function RhythmPage() {
                     <p className="text-amber-600 font-medium mt-2 max-w-xl mx-auto">
                         {t('rhythm.subtitle')}
                     </p>
+                    
+                    {/* MIDI Settings Button - Always Visible Above Control Panel */}
+                    <div className="mt-6 mb-4">
+                        <button
+                            onClick={(e) => { e.stopPropagation(); setShowMIDISettings(true); }}
+                            className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-blue-500 hover:bg-blue-600 active:bg-blue-700 text-white font-bold rounded-lg shadow-md hover:shadow-lg transition-all border-2 border-blue-600"
+                        >
+                            <span className="text-xl">🎹</span>
+                            <span>MIDI Settings</span>
+                        </button>
+                    </div>
                 </div>
 
 
@@ -672,7 +684,7 @@ export default function RhythmPage() {
                         </div>
                     </div>
 
-                    {/* BOTTOM ROW: Settings (Rests, Metronome, Sounds, MIDI) */}
+                    {/* BOTTOM ROW: Settings (Rests, Metronome, Sounds) */}
                     <div className="flex flex-wrap items-center justify-center sm:justify-start gap-4 pt-2 border-t border-gray-50">
                         <label className="flex items-center space-x-2 cursor-pointer group">
                             <input type="checkbox" checked={includeRests} onChange={e => setIncludeRests(e.target.checked)} className="w-5 h-5 text-amber-600 rounded focus:ring-amber-500" />
@@ -688,15 +700,6 @@ export default function RhythmPage() {
                             <input type="checkbox" checked={isSoundEnabled} onChange={e => setIsSoundEnabled(e.target.checked)} className="w-5 h-5 text-amber-600 rounded focus:ring-amber-500" />
                             <span className="text-gray-700 font-medium group-hover:text-amber-700 transition text-sm sm:text-base">{t('common.sounds')}</span>
                         </label>
-
-                        {/* MIDI Settings Button - Always visible, mobile-optimized */}
-                        <button
-                            onClick={(e) => { e.stopPropagation(); setShowMIDISettings(true); }}
-                            className="flex items-center justify-center space-x-2 px-4 py-2 bg-blue-50 hover:bg-blue-100 active:bg-blue-200 border-2 border-blue-300 rounded-lg transition-all group shadow-sm min-w-[120px]"
-                        >
-                            <span className="text-xl">🎹</span>
-                            <span className="text-blue-700 font-bold group-hover:text-blue-800 transition text-sm">MIDI</span>
-                        </button>
                     </div>
 
                 </div>
